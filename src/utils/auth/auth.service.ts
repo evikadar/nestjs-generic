@@ -12,7 +12,6 @@ import { User } from '@prisma/client';
 import { BcryptService } from '@utils/auth/bcrypt';
 import { EnvironmentVariables } from '@utils/config/config';
 import { randomBytesAsync } from '@utils/crypto';
-import { randomBytes } from 'crypto';
 import { validatedJwtUserInfo } from './types';
 
 @Injectable()

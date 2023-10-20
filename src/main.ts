@@ -10,12 +10,20 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { EnvironmentVariables } from '@utils/config/config';
 
 import { sApiKeyBearer, sJwtBearer } from '@utils/header';
+import fastifyCors from 'fastify-cors';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     new FastifyAdapter({ logger: false }),
   );
+
+  app.register(fastifyCors, {
+    origin: 'http://localhost:3000',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  });
+
   app.useGlobalPipes(new ValidationPipe());
   const logger = new Logger('NestBootstrap');
 
