@@ -10,7 +10,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { EnvironmentVariables } from '@utils/config/config';
 
 import { sApiKeyBearer, sJwtBearer } from '@utils/header';
-import fastifyCors from 'fastify-cors';
+import fastifyCors from '@fastify/cors';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
