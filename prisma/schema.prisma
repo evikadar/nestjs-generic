@@ -16,6 +16,12 @@ datasource db {
   // shadowDatabaseUrl = env(“SHADOW_DATABASE_URL”)
 }
 
+enum UserRole {
+  Parent
+  Teacher
+  Admin
+}
+
 // A user of the WattShift client app
 model User {
   id             String          @id @default(cuid())
@@ -32,6 +38,25 @@ model User {
   organizationId String
   apiKeys        ApiKey[]
   PasswordReset  PasswordReset[]
+  roles          UserRoleRelation[]
+  parentOf       KidParentRelation[]
+  teacherOf      KidTeacherRelation[]
+  userRoles      Role[] @relation("UserRole")
+}
+
+model Role {
+  id        String @id @default(cuid())
+  name      UserRole
+  users     User[] @relation("UserRole")
+  userRoles UserRoleRelation[]
+}
+
+model UserRoleRelation {
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+  roleId String
+  role   Role   @relation(fields: [roleId], references: [id])
+  @@id([userId, roleId])
 }
 
 model PasswordReset {
@@ -65,3 +90,30 @@ model ApiKey {
   key            String       @unique
   scopes         String[] // The scopes that the api key has access to
 }
+
+model Kid {
+  id             String          @id @default(cuid())
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  firstName      String?
+  lastName       String?
+  parents        KidParentRelation[]
+  teachers       KidTeacherRelation[]
+}
+
+model KidParentRelation {
+  kidId    String
+  kid      Kid   @relation(fields: [kidId], references: [id])
+  parentId String
+  parent   User  @relation(fields: [parentId], references: [id])
+  @@id([kidId, parentId])
+}
+
+model KidTeacherRelation {
+  kidId      String
+  kid        Kid   @relation(fields: [kidId], references: [id])
+  teacherId  String
+  teacher    User  @relation(fields: [teacherId], references: [id])
+  @@id([kidId, teacherId])
+}
+
