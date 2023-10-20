@@ -19,7 +19,12 @@ async function bootstrap() {
   );
 
   app.register(fastifyCors, {
-    origin: 'http://localhost:3000',
+    origin: [
+      'http://localhost:3001',
+      'http://localhost:3000',
+      'https://wonderful-ground-0b2ad9303.3.azurestaticapps.net/',
+      'https://wonderful-ground-0b2ad9303.3.azurestaticapps.net',
+    ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
