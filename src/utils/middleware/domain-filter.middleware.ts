@@ -15,7 +15,7 @@ export class FastifyDomainFilterMiddleware implements NestMiddleware {
   }
 
   use(req: FastifyRequest, res: any, next: () => void) {
-    const origin = req.headers.host;
+    const origin = req.headers.origin;
 
     if (!this.allowedDomains.includes(origin)) {
       throw new ForbiddenException({
